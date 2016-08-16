@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration monitorInterval="30" shutdownHook="disable" packages="com.db.comserv.main.utilities">
+	<Properties>
+		<Property name="root_dir">.</Property>
+	</Properties>
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+		</Console>
+
+		<RollingFile name="AuditLog" fileName="${root_dir}/comserv-web-audit.log" immediateFlush="false"
+			filePattern="${root_dir}/comserv-web-audit-%date{yyyy-MM-dd}-%i.log.gz">
+			<PatternLayout>
+				<Pattern>%date{yyyy-MM-dd'T'HH:mm:ss.SSS} %thread %level %logger [remoteAddr=%mdc{remoteAddr},user=%mdc{user},tid=%mdc{tid},path=%mdc{path}] - %msg%n%throwable</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="200 MB" />
+			</Policies>
+			
+            <MaxLogsStrategy max="1000" baseDir="${root_dir}" fileNamePattern="comserv-web-audit-.+gz" maxGbs="5"/>
+		</RollingFile>
+				
+		<RollingFile name="ServerLog" fileName="${root_dir}/comserv-web-server.log" immediateFlush="false"
+			filePattern="${root_dir}/comserv-web-server-%date{yyyy-MM-dd}-%i.log.gz">
+			<PatternLayout>
+				<Pattern>%date{yyyy-MM-dd'T'HH:mm:ss.SSS} %thread %level %logger [%class{1}.%method] - %msg%n%throwable</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="200 MB" />
+			</Policies>
+			
+			<MaxLogsStrategy max="1000" baseDir="${root_dir}" fileNamePattern="comserv-web-server-.+gz" maxGbs="5"/>
+		</RollingFile>
+		
+		<RollingFile name="RequestLog" fileName="${root_dir}/comserv-web-request.log" immediateFlush="false"
+			filePattern="${root_dir}/comserv-web-request-%date{yyyy-MM-dd}-%i.log.gz">
+			<PatternLayout>
+				<Pattern>%date{yyyy-MM-dd'T'HH:mm:ss.SSS} %thread %level %logger [%class{1}.%method] [remoteAddr=%mdc{remoteAddr},user=%mdc{user},tid=%mdc{tid},path=%mdc{path}] - %msg%n%throwable</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="200 MB" />
+			</Policies>
+			
+			<MaxLogsStrategy max="1000" baseDir="${root_dir}" fileNamePattern="comserv-web-request-.+gz" maxGbs="5"/>
+		</RollingFile>
+		
+		<RollingFile name="ExternalAccessLog" fileName="${root_dir}/comserv-web-ext-access.log" immediateFlush="false"
+            filePattern="${root_dir}/comserv-web-ext-access-%date{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>%date{yyyy-MM-dd'T'HH:mm:ss.SSS} %msg%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="200 MB" />
+            </Policies>
+            
+            <MaxLogsStrategy max="1000" baseDir="${root_dir}" fileNamePattern="comserv-web-ext-access-.+gz" maxGbs="5"/>
+        </RollingFile>
+        
+	</Appenders>
+	<Loggers>
+		<Logger name="AUDIT" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+		
+		<Logger name="SERVER" level="debug" additivity="false">
+			<AppenderRef ref="ServerLog" />
+		</Logger>
+		
+		<Logger name="CRYPTO" level="debug" additivity="false">
+            <AppenderRef ref="ServerLog" />
+        </Logger>
+        
+        <Logger name="AWS-S3" level="debug" additivity="false">
+            <AppenderRef ref="ServerLog" />
+        </Logger> 
+		
+		<Logger name="SESSION" level="debug" additivity="false">
+			<AppenderRef ref="ServerLog" />
+		</Logger>
+		
+		<Logger name="REQUEST" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+		
+		<Logger name="REQUEST-CACHE" level="debug" additivity="false">
+            <AppenderRef ref="RequestLog" />
+        </Logger>
+		
+		<Logger name="ESAPI" level="debug" additivity="false">
+            <AppenderRef ref="RequestLog" />
+        </Logger>
+		
+		<Logger name="LOGGING" level="info" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+		
+		<Logger name="PROPERTIES" level="info" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+		
+		<Logger name="IPBLOCKER" level="info" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+		
+		<Logger name="EXT-ACCESS" level="info" additivity="false">
+            <AppenderRef ref="ExternalAccessLog" />
+        </Logger>
+		
+		<Logger name="org.springframework" level="info" additivity="false">
+			<AppenderRef ref="ServerLog" />
+		</Logger>
+		
+		<Root level="debug">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="ServerLog" />
+		</Root>
+
+	</Loggers>
+</Configuration>

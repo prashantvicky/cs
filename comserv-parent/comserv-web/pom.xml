@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>comserv-web</artifactId>
+	<packaging>war</packaging>
+
+	<parent>
+		<groupId>com.db.comserv</groupId>
+		<artifactId>comserv-parent</artifactId>
+		<version>1.8.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<name>comserv-web</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.db.comserv</groupId>
+			<artifactId>comserv-common</artifactId>
+			<version>${version}</version>
+		</dependency>
+<dependency>
+<groupId>com.vividsolutions</groupId>
+<artifactId>jts</artifactId>
+<version>1.13</version>
+</dependency>
+
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>${jsp-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		
+		
+	</dependencies>
+
+	<build>
+		<finalName>${name}</finalName>
+		
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+            
+            <resource>
+                <directory>${project.basedir}/../build</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>BUILD_NUMBER</include>
+                </includes>
+            </resource>
+        </resources>
+        
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+                  
+                  
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<url>http://localhost:8080/manager/text</url>
+					<server>TomcatServer</server>
+					<path>/${name}</path>
+				</configuration>
+			</plugin>
+
+			
+			
+			
+
+			
+			
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven-war-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-war</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>exploded</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+			
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											com.github.klieber
+										</groupId>
+										<artifactId>
+											phantomjs-maven-plugin
+										</artifactId>
+										<versionRange>
+											[0.4,)
+										</versionRange>
+										<goals>
+											<goal>install</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<groupId>comserv-web</groupId>
+</project>

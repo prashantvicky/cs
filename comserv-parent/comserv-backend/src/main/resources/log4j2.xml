@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration monitorInterval="30" shutdownHook="disable"
+	packages="com.db.comserv.main.utilities">
+	<Properties>
+		<Property name="root_dir">.</Property>
+	</Properties>
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+		</Console>
+
+		<RollingFile name="AuditLog" fileName="${root_dir}/comserv-backend-audit.log"
+			immediateFlush="false" filePattern="${root_dir}/comserv-backend-audit-%date{yyyy-MM-dd}-%i.log.gz">
+			<PatternLayout>
+				<Pattern>%date{yyyy-MM-dd'T'HH:mm:ss.SSS} %thread %level %logger [remoteAddr=%mdc{remoteAddr},user=%mdc{user},tid=%mdc{tid},path=%mdc{path}] - %msg%n%throwable</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="200 MB" />
+			</Policies>
+			<MaxLogsStrategy max="1000" baseDir="${root_dir}"
+				fileNamePattern="comserv-backend-audit-.+gz" maxGbs="10" />
+		</RollingFile>
+
+		<RollingFile name="ServerLog" fileName="${root_dir}/comserv-backend-server.log"
+			immediateFlush="false"
+			filePattern="${root_dir}/comserv-backend-server-%date{yyyy-MM-dd}-%i.log.gz">
+			<PatternLayout>
+				<Pattern>%date{yyyy-MM-dd'T'HH:mm:ss.SSS} %thread %level %logger [%class{1}.%method] - %msg%n%throwable</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="200 MB" />
+			</Policies>
+
+			<MaxLogsStrategy max="1000" baseDir="${root_dir}"
+				fileNamePattern="comserv-backend-server-.+gz" maxGbs="10" />
+		</RollingFile>
+
+		<RollingFile name="RequestLog" fileName="${root_dir}/comserv-backend-request.log"
+			immediateFlush="false"
+			filePattern="${root_dir}/comserv-backend-request-%date{yyyy-MM-dd}-%i.log.gz">
+			<PatternLayout>
+				<Pattern>%date{yyyy-MM-dd'T'HH:mm:ss.SSS} %thread %level %logger [%class{1}.%method] [remoteAddr=%mdc{remoteAddr},user=%mdc{user},tid=%mdc{tid},path=%mdc{path}] - %msg%n%throwable</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="200 MB" />
+			</Policies>
+
+			<MaxLogsStrategy max="1000" baseDir="${root_dir}"
+				fileNamePattern="comserv-backend-request-.+gz" maxGbs="10" />
+		</RollingFile>
+
+		<RollingFile name="ExternalAccessLog" fileName="${root_dir}/comserv-backend-ext-access.log"
+			immediateFlush="false"
+			filePattern="${root_dir}/comserv-backend-ext-access-%date{yyyy-MM-dd}-%i.log.gz">
+			<PatternLayout>
+				<Pattern>%date{yyyy-MM-dd'T'HH:mm:ss.SSS} %msg%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="200 MB" />
+			</Policies>
+
+			<MaxLogsStrategy max="1000" baseDir="${root_dir}"
+				fileNamePattern="comserv-backend-ext-access-.+gz" maxGbs="5" />
+		</RollingFile>
+		<RollingFile name="UserAccessLog" fileName="${root_dir}/comserv-backend-user-access.log"
+			immediateFlush="false"
+			filePattern="${root_dir}/comserv-backend-ext-access-%date{yyyy-MM-dd}-%i.log.gz">
+			<PatternLayout>
+				<Pattern>%date{yyyy-MM-dd'T'HH:mm:ss.SSS} %msg%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="200 MB" />
+			</Policies>
+
+			<MaxLogsStrategy max="1000" baseDir="${root_dir}"
+				fileNamePattern="comserv-backend-user-access-.+gz" maxGbs="5" />
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<Logger name="AUDIT" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="SERVER" level="debug" additivity="false">
+			<AppenderRef ref="ServerLog" />
+		</Logger>
+
+		<Logger name="CRYPTO" level="debug" additivity="false">
+			<AppenderRef ref="ServerLog" />
+		</Logger>
+
+		<Logger name="AWS-S3" level="debug" additivity="false">
+			<AppenderRef ref="ServerLog" />
+		</Logger>
+
+		<Logger name="REQUEST" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="ESAPI" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="AUTH" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="BANNER" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="COUNTRIES" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="ROLES" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="SPS" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="ORGS" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="DEPLOYMENTS" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="SETTINGS" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="ACCESSPOINTS" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="MARKETS" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="USERS" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="FLOORS" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="BUILDINGS" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="IMAGES" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="ZONES" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="REPORTS" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="SEARCH" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="PACKAGE" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="VOX-POLLER" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="VOXTDM-POLLER" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="VNAM-DETAILS" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="LOGGING" level="info" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="PROPERTIES" level="info" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="ALERTER" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="NOTIFICATIONS" level="info" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="org.springframework" level="info" additivity="false">
+			<AppenderRef ref="ServerLog" />
+		</Logger>
+
+		<Logger name="org.hibernate" level="info" additivity="false">
+			<AppenderRef ref="ServerLog" />
+		</Logger>
+
+		<Logger name="org.jboss" level="info" additivity="false">
+			<AppenderRef ref="ServerLog" />
+		</Logger>
+
+		<Logger name="RB-DETAILS" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="PI-DETAILS" level="debug" additivity="false">
+			<AppenderRef ref="ServerLog" />
+		</Logger>
+
+		<Logger name="MSE-DETAILS" level="info" additivity="false">
+			<AppenderRef ref="ServerLog" />
+		</Logger>
+
+		<Logger name="APSTATREQ" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="APSTATAUDIT" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="BANDWIDTH" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="POLLER" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="PI-POLLER" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="REPORTEMAILBATCH" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="MSERESYNCBATCH" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="DELETEHISTORYBATCH" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="DELETEAPSTATBATCH" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="MAILER" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="TRIALSPS" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="BILLABLESPS" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="TOPN" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="METRICSERVICE" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+
+		<Logger name="METRIC_AUTH" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="MOTUSREQ" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="MSEREF" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="org.apache.http" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="com.amazonaws" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="UTILS" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="SMALLCELL" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="CSON" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="CLIENT_POLLER" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="CLIENT" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="VOWIFI" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="NAM-DETAILS" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="RB-SYNC" level="debug" additivity="false">
+			<AppenderRef ref="ServerLog" />
+		</Logger>
+
+		<Logger name="EXT-ACCESS" level="info" additivity="false">
+			<AppenderRef ref="ExternalAccessLog" />
+		</Logger>
+
+		<Logger name="USER-ACCESS" level="info" additivity="false">
+			<AppenderRef ref="UserAccessLog" />
+		</Logger>
+
+		<Logger name="RGIMPORTER" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="COMMWIFI" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="RRMPROFILE" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="COMPARISON-REPORT-UTILITY" level="debug"
+			additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="COMMON-REPORT" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="NORMAL-REPORT-UTILITY" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="PREVIEW" level="debug" additivity="false">
+			<AppenderRef ref="RequestLog" />
+		</Logger>
+
+		<Logger name="SNMPMANAGER" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="CLOUDWIFI" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Logger name="RRM" level="debug" additivity="false">
+			<AppenderRef ref="AuditLog" />
+		</Logger>
+
+		<Root level="debug">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="ServerLog" />
+		</Root>
+
+	</Loggers>
+</Configuration>
